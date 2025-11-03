@@ -36,6 +36,6 @@ class SettingsIsarModel {
   /// 是否显示绅士模式设置（通过点击 Copyright 10次解锁）
   bool showNsfwSetting = false;
 
-  @Enumerated(EnumType.ordinal)
+  @ignore
   IWebPlayerEmbeddedType webviewPlayType = IWebPlayerEmbeddedType.p2pHLS;
 }

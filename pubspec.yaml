@@ -176,8 +176,7 @@ dependency_overrides:
       url: https://github.com/Predidit/media-kit.git
       ref: main
       path: ./media_kit_video
-  # 解决版本兼容性问题
-  analyzer: 5.13.0
+
   media_kit_libs_video:
     git:
       url: https://github.com/Predidit/media-kit.git
@@ -223,7 +222,7 @@ dev_dependencies:
 
   isar_community_generator: ^3.3.0-dev.2
 
-  build_runner: ^2.3.3
+  build_runner: ^2.4.8
 
   # flutter pub run change_app_package_name:main io.github.d1y.catmovie
   change_app_package_name: ^1.5.0
