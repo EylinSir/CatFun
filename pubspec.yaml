@@ -117,6 +117,11 @@ dependencies:
       url: https://github.com/Predidit/media-kit.git
       ref: main
       path: ./libs/universal/media_kit_libs_video
+  media_kit_libs_windows_video:
+    git:
+      url: https://github.com/Predidit/media-kit.git
+      ref: main
+      path: ./libs/windows/media_kit_libs_windows_video
 
   bounce_tapper: ^1.1.4
 
