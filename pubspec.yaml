@@ -141,6 +141,9 @@ dependencies:
   scrolls_to_top: ^2.1.1
 
 dependency_overrides:
+  # Fix for analyzer compatibility with source_gen
+  analyzer: 5.13.0
+  
   media_kit:
     git:
       url: https://github.com/Predidit/media-kit.git
