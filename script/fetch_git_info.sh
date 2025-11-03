@@ -1,31 +1,35 @@
+#!/bin/bash
 FILE="lib/git_info.dart"
 
-COMMIT=`git rev-parse --short HEAD`
-DESCRIBE=`git describe --tags --always`
+# 获取Git提交信息
+COMMIT=$(git rev-parse --short HEAD)
+DESCRIBE=$(git describe --tags --always)
 
-# copy by https://gist.github.com/ericbmerritt/f52f1c48b86150704270
-# https://gist.github.com/rponte/fdc0724dd984088606b0
+# 解析版本信息
+BUILD=$(echo "$DESCRIBE" | awk '{split($0,a,"-"); print a[2]}')
+PATCH=$(echo "$DESCRIBE" | awk '{split($0,a,"-"); print a[3]}')
 
-# increment the build number (ie 115 to 116)
-# VERSION=`echo $DESCRIBE | awk '{split($0,a,"-"); print a[1]}'`
-BUILD=`echo $DESCRIBE | awk '{split($0,a,"-"); print a[2]}'`
-PATCH=`echo $DESCRIBE | awk '{split($0,a,"-"); print a[3]}'`
-
+# 如果只有哈希值，使用提交计数作为构建号
 if [[ "${DESCRIBE}" =~ ^[A-Fa-f0-9]+$ ]]; then
-    # VERSION="0.0.0"
-    BUILD=`git rev-list HEAD --count`
+    BUILD=$(git rev-list HEAD --count)
     PATCH=${DESCRIBE}
 fi
 
-if [ "${BUILD}" = "" ]; then
+# 确保BUILD有值
+if [ -z "${BUILD}" ]; then
     BUILD='0'
 fi
 
-if [ "${BUILD}" = "" ]; then
+# 确保PATCH有值
+if [ -z "${PATCH}" ]; then
     PATCH=$DESCRIBE
 fi
 
+# 构建版本号
+REAL_VERSION="${BUILD}.${PATCH}"
 
-REAL_VERSION=${BUILD}.${PATCH}
-echo "const gitCommit = '$COMMIT';" > $FILE
-echo "const gitTag = '$REAL_VERSION';" >> $FILE
+# 写入版本信息文件
+echo "const gitCommit = '$COMMIT';" > "$FILE"
+echo "const gitTag = '$REAL_VERSION';" >> "$FILE"
+
+echo "Generated git_info.dart with version: $REAL_VERSION"
