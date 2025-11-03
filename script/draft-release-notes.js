@@ -54,7 +54,7 @@ function getTagNote(tag) {
   return note.join("\n") + "\n"
 }
 
-const kRepo = "waifu-project/movie"
+const kRepo = "EylinSir/CatFun"
 
 const fastGithubDomains = [
   // https://gh-proxy.com
