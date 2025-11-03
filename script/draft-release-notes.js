@@ -159,18 +159,38 @@ function sortTagsBySemVer(tags) {
   /** @type {GithubTagResponse} */
   const _tags = await resp.json()
   const tags = sortTagsBySemVer(_tags)
-  const now = tags[0].name//latest
-  const old = tags[1].name//我赌你枪里没有子弹
-  const hashs = getTwoTagCommitHashs(now, old)
-  let notes = []
-  for (const hash of hashs) {
-    const body = getCommitBody(hash)
-    const _ = parseCommitBody(body)
-    if (_) {
-      notes = [...notes, ..._]
-    }
+  
+  // 检查是否有至少一个标签
+  if (tags.length === 0) {
+    console.error("错误: 仓库中没有标签!")
+    process.exit(1)
   }
+  
+  const now = tags[0].name // latest tag
+  let notes = []
   let releaseNote = getTagNote(now)
+  
+  // 如果有至少两个标签，获取两个标签之间的提交记录
+  if (tags.length >= 2) {
+    const old = tags[1].name
+    const hashs = getTwoTagCommitHashs(now, old)
+    
+    for (const hash of hashs) {
+      try {
+        const body = getCommitBody(hash)
+        const _ = parseCommitBody(body)
+        if (_) {
+          notes = [...notes, ..._]
+        }
+      } catch (error) {
+        console.warn(`无法获取提交 ${hash} 的信息:`, error.message)
+      }
+    }
+  } else {
+    // 只有一个标签时，添加提示信息
+    notes.push("这是第一个版本发布")
+  }
+  
   releaseNote += notes.map(item=> `- ${item}`).join("\n")
   const note = buildRealNotes(now, releaseNote)
   console.log(note)
