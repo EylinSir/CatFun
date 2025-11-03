@@ -151,6 +151,8 @@ dependency_overrides:
       url: https://github.com/Predidit/media-kit.git
       ref: main
       path: ./media_kit_video
+  # 解决source_gen-3.1.0与analyzer版本不兼容问题
+  analyzer: 5.13.0
   media_kit_libs_video:
     git:
       url: https://github.com/Predidit/media-kit.git
